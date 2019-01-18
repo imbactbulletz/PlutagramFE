@@ -1,0 +1,8 @@
+Current issues:
+  Frontend:
+    - Hamburger menu appears when elements are empty (tried hiding it with @ViewChild but it cannot resolve module in which Navbar resides)
+  Backend:
+    - Remove unused imports (Base64Encoder)
+
+Questions:
+  - Why is there a logout on backend? Why can't just token expire after a certain time on frontend?
