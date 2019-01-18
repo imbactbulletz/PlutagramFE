@@ -1,0 +1,19 @@
+@import "~angular-bootstrap-md/scss/core/colors";
+
+a {
+  color: $deep-orange-base;
+}
+
+input[type=text]:focus:not([readonly]) {
+  border-color: $deep-orange-base;
+  box-shadow: 0 0 0 $deep-orange-base inset, 0 0 8px $deep-orange-base;
+}
+
+input[type=email]:focus:not([readonly]) {
+  border-color: $deep-orange-base;
+  box-shadow: 0 0 0 $deep-orange-base inset, 0 0 8px $deep-orange-base;
+}
+input[type=password]:focus:not([readonly]) {
+  border-color: $deep-orange-base;
+  box-shadow: 0 0 0 $deep-orange-base inset, 0 0 8px $deep-orange-base;
+}
