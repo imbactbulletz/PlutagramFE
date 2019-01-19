@@ -4,17 +4,17 @@
 
     <p class="h4 mb-4">Sign up</p>
 
-    <!-- Username -->
-    <input type="text" id="registerFormUsername" class="form-control mb-4" placeholder="Username">
-
     <!-- Email -->
-    <input type="email" id="registerFormEmail" class="form-control mb-4" placeholder="E-mail">
+    <input [(ngModel)]="email" type="email" name="email" id="registerFormEmail" class="form-control mb-4" placeholder="E-mail">
+
+    <!-- Username -->
+    <input [(ngModel)]="username" type="text" name="username" id="registerFormUsername" class="form-control mb-4" placeholder="Username">
 
     <!-- Password -->
-    <input type="password" id="registerFormPassword" class="form-control mb-4" placeholder="Password">
+    <input [(ngModel)]="password" type="password" name="password" id="registerFormPassword" class="form-control mb-4" placeholder="Password">
 
     <!-- Sign up button -->
-    <button mdbBtn block="true" class="my-4 deep-orange" type="submit">Sign up</button>
+    <button (click)="register()" mdbBtn block="true" class="my-4 deep-orange" type="submit">Sign up</button>
 
     <!-- Sign in -->
     <p>Already a member?

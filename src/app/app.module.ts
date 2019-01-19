@@ -7,6 +7,8 @@ import { SharedModule } from './shared/shared.module';
 import { HeaderComponent } from './layouts/header/header.component';
 import { LoginComponent } from './layouts/login/login.component';
 import { RegisterComponent } from './layouts/register/register.component';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -17,6 +19,8 @@ import { RegisterComponent } from './layouts/register/register.component';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
+    FormsModule,
     AppRoutingModule,
     SharedModule
   ],
