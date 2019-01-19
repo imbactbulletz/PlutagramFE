@@ -3,5 +3,16 @@
     <a class="logo navbar-brand" href="#"><strong>Plutagram</strong></a>
   </logo>
   <links>
+    <ul class="navbar-nav mr-auto">
+      <!--Sign in-->
+      <li class="nav-item waves-light" routerLinkActive="active" mdbRippleRadius>
+        <a routerLink="/signin" class="nav-link">Sign in <span class="sr-only">(current)</span></a>
+      </li>
+
+      <!--Sign up-->
+      <li routerLinkActive="active" class="nav-item waves-light" mdbRippleRadius>
+        <a routerLink="/signup" class="nav-link">Sign up</a>
+      </li>
+    </ul>
   </links>
 </mdb-navbar>
