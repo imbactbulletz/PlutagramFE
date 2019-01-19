@@ -5,4 +5,5 @@ Current issues:
     - Remove unused imports (Base64Encoder)
 
 Questions:
-  - Why is there a logout on backend? Why can't just token expire after a certain time on frontend?
+  - Why is there a logout on backend? (Probably so he can send a logout message to back end when logging out)
+  - Should more than one user with the same email address be allowed to register? (Currently, n users with same email can register)
