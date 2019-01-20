@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { MDBModalRef } from 'angular-bootstrap-md';
+import { Component, OnInit, ViewChild} from '@angular/core';
 
 @Component({
   selector: 'app-modal',
@@ -7,12 +6,28 @@ import { MDBModalRef } from 'angular-bootstrap-md';
   styleUrls: ['./modal.component.scss']
 })
 export class ModalComponent implements OnInit {
-  title;
-  body;
+  content: string;
 
-  constructor(public modalRef: MDBModalRef) { }
+  properties = {
+    backdrop: true,
+    ignoreBackdropClick: false};
+
+  @ViewChild('modal') modal: any;
+
+  constructor() { }
 
   ngOnInit() {
   }
 
+  show(content: string) {
+    this.content = content;
+    this.modal.show();
+  }
+
+  setProperties(backdrop = true, ignoreBackdropClick = false){
+    this.properties = {
+      'backdrop': backdrop,
+      'ignoreBackdropClick': ignoreBackdropClick
+    };
+  }
 }
