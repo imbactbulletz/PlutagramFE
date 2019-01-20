@@ -9,13 +9,15 @@ import { LoginComponent } from './layouts/login/login.component';
 import { RegisterComponent } from './layouts/register/register.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { ModalComponent } from './layouts/modal/modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
@@ -24,6 +26,7 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     SharedModule
   ],
+  entryComponents: [ ModalComponent ],
   providers: [],
   bootstrap: [AppComponent]
 })

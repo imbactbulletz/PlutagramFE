@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {RESTAPI} from '../../shared/rest-api-calls';
 import {RegisterDTO} from '../../shared/models/dto/register.dto';
+import {MDBModalRef, MDBModalService} from 'angular-bootstrap-md';
+import {ModalComponent} from '../modal/modal.component';
 
 @Component({
   selector: 'app-register',
@@ -13,7 +15,10 @@ export class RegisterComponent implements OnInit {
   private username;
   private password;
 
-  constructor(private http: HttpClient) { }
+  private modal: MDBModalRef;
+
+  constructor(private http: HttpClient, private modalService: MDBModalService) {
+  }
 
   ngOnInit() {
   }
@@ -25,14 +30,16 @@ export class RegisterComponent implements OnInit {
       'password': this.password
     };
 
-    console.log(RESTAPI.getSignUpURL());
-
     this.http.post(RESTAPI.getSignUpURL(), body).subscribe(
-      (response: RegisterDTO ) => {
-          if (response != null) {
-            alert('Successfully registered! Check your email for activation link!');
-          }
+      (response: RegisterDTO) => {
+        if (response != null) {
+          this.openModal();
+        }
       }
     );
+  }
+
+  openModal() {
+    this.modal = this.modalService.show(ModalComponent);
   }
 }
