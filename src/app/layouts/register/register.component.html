@@ -1,20 +1,20 @@
 <div class="container col-lg-5">
   <!--Validation form-->
-  <form class="text-center p-5">
+    <form class="text-center p-5" ngNativeValidate (ngSubmit)="register()">
 
     <p class="h4 mb-4">Sign up</p>
 
     <!-- Email -->
-    <input [(ngModel)]="email" type="email" name="email" id="registerFormEmail" class="form-control mb-4" placeholder="E-mail">
+    <input [(ngModel)]="email" type="email" name="email" id="registerFormEmail" class="form-control mb-4" placeholder="E-mail" required>
 
     <!-- Username -->
-    <input [(ngModel)]="username" type="text" name="username" id="registerFormUsername" class="form-control mb-4" placeholder="Username">
+    <input [(ngModel)]="username" type="text" name="username" id="registerFormUsername" class="form-control mb-4" placeholder="Username" required>
 
     <!-- Password -->
-    <input [(ngModel)]="password" type="password" name="password" id="registerFormPassword" class="form-control mb-4" placeholder="Password">
+    <input [(ngModel)]="password" type="password" name="password" id="registerFormPassword" class="form-control mb-4" placeholder="Password" required>
 
     <!-- Sign up button -->
-    <button (click)="register()" mdbBtn block="true" class="my-4 deep-orange" type="submit">Sign up</button>
+    <button type="submit" mdbBtn block="true" class="my-4 deep-orange">Sign up</button>
 
     <!-- Sign in -->
     <p>Already a member?

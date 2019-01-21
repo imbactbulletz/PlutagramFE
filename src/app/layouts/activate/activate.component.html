@@ -1,0 +1,17 @@
+<div class="container col-lg-5">
+  <!--Validation form-->
+  <form class="text-center p-5" ngNativeValidate (ngSubmit)="activate()">
+
+    <p class="h4 mb-4">Activate your account</p>
+
+    <!-- Token -->
+    <input [(ngModel)]="token" type="text" name="token" id="validationFormToken" class="form-control mb-4" placeholder="Please enter your token here" required>
+
+    <!-- Activate button -->
+    <button mdbBtn block="true" class="my-4 deep-orange" type="submit">Activate</button>
+
+  </form>
+
+  <!-- Modal-->
+  <app-modal #modal></app-modal>
+</div>

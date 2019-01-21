@@ -1,21 +1,14 @@
 <div class="container col-lg-5">
   <!--Validation form-->
-  <form class="text-center p-5">
+  <form class="text-center p-5" ngNativeValidate (ngSubmit)="login()">
 
     <p class="h4 mb-4">Sign in</p>
 
     <!-- Username -->
-    <input type="text" id="loginFormUsername" class="form-control mb-4" placeholder="Username">
+    <input [(ngModel)]="email" type="text" name="email" id="loginFormEmail" class="form-control mb-4" placeholder="E-mail" required>
 
     <!-- Password -->
-    <input type="password" id="loginFormPassword" class="form-control mb-4" placeholder="Password">
-
-    <div class="d-flex justify-content-around">
-      <div>
-        <!-- Forgot password -->
-        <a href="">Forgot password?</a>
-      </div>
-    </div>
+    <input [(ngModel)]="password" type="password" name="password" id="loginFormPassword" class="form-control mb-4" placeholder="Password" required>
 
     <!-- Sign in button -->
     <button mdbBtn block="true" class="my-4 deep-orange" type="submit">Sign in</button>
@@ -28,4 +21,6 @@
   </form>
   <!-- Default form login -->
 
+  <!-- Modal-->
+  <app-modal #modal></app-modal>
 </div>

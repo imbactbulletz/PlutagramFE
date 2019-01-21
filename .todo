@@ -3,7 +3,7 @@ Current issues:
     - Hamburger menu appears when elements are empty (tried hiding it with @ViewChild but it cannot resolve module in which Navbar resides)
   Backend:
     - Remove unused imports (Base64Encoder)
-
+    - Handle failed login (Currently server returns 500 because it can't find user based on credentials)
 Questions:
   - Why is there a logout on backend? (Probably so he can send a logout message to back end when logging out)
   - Should more than one user with the same email address be allowed to register? (Currently, n users with same email can register)

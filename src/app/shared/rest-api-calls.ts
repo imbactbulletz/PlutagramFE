@@ -10,4 +10,9 @@ export abstract class RESTAPI {
   public static getSignInURL() {
     return this.baseUrl + '/auth/login';
   }
+
+  // ACTIVATE
+  public static getActivateAccountURL() {
+    return this.baseUrl + '/auth/activateAccount';
+  }
 }

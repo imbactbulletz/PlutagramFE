@@ -10,6 +10,9 @@ import { RegisterComponent } from './layouts/register/register.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ModalComponent } from './layouts/modal/modal.component';
+import {CoreModule} from './core/core.module';
+import { ActivateComponent } from './layouts/activate/activate.component';
+import { HomeComponent } from './layouts/home/home.component';
 
 @NgModule({
   declarations: [
@@ -17,14 +20,17 @@ import { ModalComponent } from './layouts/modal/modal.component';
     HeaderComponent,
     LoginComponent,
     RegisterComponent,
-    ModalComponent
+    ModalComponent,
+    ActivateComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
     AppRoutingModule,
-    SharedModule
+    SharedModule,
+    CoreModule.forRoot()
   ],
   entryComponents: [ ModalComponent ],
   providers: [],
