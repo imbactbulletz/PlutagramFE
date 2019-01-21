@@ -5,7 +5,7 @@
     <p class="h4 mb-4">Activate your account</p>
 
     <!-- Token -->
-    <input [(ngModel)]="token" type="text" name="token" id="validationFormToken" class="form-control mb-4" placeholder="Please enter your token here" required>
+    <input #tokenInput [(ngModel)]="token" type="text" name="token" id="validationFormToken" class="form-control mb-4" placeholder="Please enter your token here" required>
 
     <!-- Activate button -->
     <button mdbBtn block="true" class="my-4 deep-orange" type="submit">Activate</button>
