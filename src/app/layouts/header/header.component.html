@@ -5,13 +5,33 @@
   <links>
     <ul class="navbar-nav mr-auto">
       <!--Sign in-->
-      <li class="nav-item waves-light" routerLinkActive="active" mdbRippleRadius>
+      <li *ngIf="!isLoggedIn()" class="nav-item waves-light" routerLinkActive="active" mdbRippleRadius>
         <a routerLink="/signin" class="nav-link">Sign in <span class="sr-only">(current)</span></a>
       </li>
 
       <!--Sign up-->
-      <li routerLinkActive="active" class="nav-item waves-light" mdbRippleRadius>
+      <li *ngIf="!isLoggedIn()" routerLinkActive="active" class="nav-item waves-light" mdbRippleRadius>
         <a routerLink="/signup" class="nav-link">Sign up</a>
+      </li>
+
+
+    </ul>
+
+    <!--Right side of navbar-->
+    <ul class="navbar-nav">
+      <!--Log out-->
+      <li class="nav-item waves-light avatar">
+        <a class="nav-link" href="#" aria-haspopup="true" aria-expanded="false">
+          <img style="max-height: 30px; max-width: 30px;" src="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg" class="img-fluid rounded-circle z-depth-0"></a>
+      </li>
+      <li *ngIf="isLoggedIn()" routerLinkActive="active" class="nav-item waves-light" mdbRippleRadius>
+        <a class="nav-link">Home</a>
+      </li>
+      <li *ngIf="isLoggedIn()" routerLinkActive="active" class="nav-item waves-light" mdbRippleRadius>
+        <a class="nav-link">Settings</a>
+      </li>
+      <li *ngIf="isLoggedIn()" routerLinkActive="active" class="nav-item waves-light" mdbRippleRadius>
+        <a class="nav-link">Log out</a>
       </li>
     </ul>
   </links>
