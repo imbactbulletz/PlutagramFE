@@ -13,6 +13,7 @@ import { ModalComponent } from './layouts/modal/modal.component';
 import {CoreModule} from './core/core.module';
 import { ActivateComponent } from './layouts/activate/activate.component';
 import { HomeComponent } from './layouts/home/home.component';
+import { SettingsComponent } from './layouts/settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { HomeComponent } from './layouts/home/home.component';
     RegisterComponent,
     ModalComponent,
     ActivateComponent,
-    HomeComponent
+    HomeComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,

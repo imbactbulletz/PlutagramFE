@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { RESTAPI } from '../../shared/rest-api-calls';
 import {LoginDTO} from '../../shared/models/dto/login.dto';
 import {Router} from '@angular/router';
+import {DataService} from '../../shared/services/data.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   @ViewChild('modal') modal: any;
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router,
+              private dataService: DataService) { }
 
   ngOnInit() {
   }
@@ -34,9 +36,10 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
       (response: LoginDTO) => {
         if (response) {
-          console.log(JSON.stringify(response));
           if (response.token) {
             localStorage.setItem('X-AUTH-TOKEN', response.token);
+            console.log(JSON.stringify(response.user));
+            this.dataService.changeUser(response.user);
             this.router.navigateByUrl('home');
           }
         } else {

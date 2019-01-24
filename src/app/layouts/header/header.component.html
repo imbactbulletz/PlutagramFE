@@ -1,6 +1,6 @@
 <mdb-navbar SideClass="navbar fixed-top navbar-expand-lg navbar-dark deep-orange scrolling-navbar" [containerInside]="false">
   <logo>
-    <a class="logo navbar-brand" href="#"><strong>Plutagram</strong></a>
+    <a class="logo navbar-brand" routerLink="/home"><strong>Plutagram</strong></a>
   </logo>
   <links>
     <ul class="navbar-nav mr-auto">
@@ -20,15 +20,16 @@
     <!--Right side of navbar-->
     <ul class="navbar-nav">
       <!--Log out-->
-      <li class="nav-item waves-light avatar">
-        <a class="nav-link" href="#" aria-haspopup="true" aria-expanded="false">
-          <img style="max-height: 30px; max-width: 30px;" src="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg" class="img-fluid rounded-circle z-depth-0"></a>
+      <li *ngIf="user" class="nav-item waves-light avatar">
+        <a style="margin-top: 3px;" class="nav-link p-0" href="#" aria-haspopup="true" aria-expanded="false">
+          {{user.username }}
+          <img *ngIf="user" style="max-height: 35px; max-width: 35px;" src="{{ displayPicture() }}" class="img-fluid rounded-circle z-depth-0"></a>
       </li>
       <li *ngIf="isLoggedIn()" routerLinkActive="active" class="nav-item waves-light" mdbRippleRadius>
         <a class="nav-link">Home</a>
       </li>
       <li *ngIf="isLoggedIn()" routerLinkActive="active" class="nav-item waves-light" mdbRippleRadius>
-        <a class="nav-link">Settings</a>
+        <a routerLink="settings" class="nav-link">Settings</a>
       </li>
       <li *ngIf="isLoggedIn()" routerLinkActive="active" class="nav-item waves-light" mdbRippleRadius>
         <a class="nav-link">Log out</a>

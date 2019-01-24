@@ -7,6 +7,7 @@ import {HeaderComponent} from '../layouts/header/header.component';
 import {LoginComponent} from '../layouts/login/login.component';
 import {RegisterComponent} from '../layouts/register/register.component';
 import {ModalComponent} from '../layouts/modal/modal.component';
+import {AuthGuard} from '../core/guards/auth.guard';
 
 @NgModule({
   declarations: [],
@@ -17,6 +18,9 @@ import {ModalComponent} from '../layouts/modal/modal.component';
   ],
   exports: [
     MDBBootstrapModule
+  ],
+  providers: [
+    AuthGuard
   ]
 })
 export class SharedModule { }

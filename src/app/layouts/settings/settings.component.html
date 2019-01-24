@@ -1,0 +1,45 @@
+<div class="container col-lg-5">
+    <mdb-card class="testimonial-card">
+
+      <div class="deep-orange lighten-1">
+        <!--Avatar-->
+        <div style="text-align: center;" class="avatar p-3">
+          <img style="max-width: 300px; max-height: 300px;" src="{{ displayPicture() }}" class="rounded-circle" id="profileImage">
+        </div>
+      </div>
+
+
+      <mdb-card-body>
+        <!--Name-->
+        <mdb-card-title>
+          <!--Aligned username-->
+          <h4 *ngIf="user" style="text-align: center">{{ user.username }}</h4>
+
+          <!--Aligned button-->
+          <div id="buttonArea" align="center">
+            <input
+              style="display: none"
+              type="file" (change)="onFileChanged($event)"
+              #fileInput>
+            <button mdbBtn type="button" color="black" rounded="true" [outline]="true" size="sm" mdbWavesEffect (click)="fileInput.click();">Change profile picture</button>
+          </div>
+        </mdb-card-title>
+        <hr>
+        <!--Validation form-->
+        <form class="text-center p-5" ngNativeValidate (ngSubmit)="applySettings()">
+
+          <p class="h4 mb-4">Change Settings</p>
+
+          <!-- Email -->
+          <input [(ngModel)]="user.email" type="email" name="email" id="settingsFormEmail" class="form-control mb-4" placeholder="E-mail" required>
+
+          <!-- Password -->
+          <input [(ngModel)]="user.password" type="password" name="password" id="settingsFormPassword" class="form-control mb-4" placeholder="Password" required>
+
+          <!-- Apply button -->
+          <button type="submit" mdbBtn block="true" class="my-4 deep-orange">Apply</button>
+
+        </form>
+      </mdb-card-body>
+    </mdb-card>
+</div>
