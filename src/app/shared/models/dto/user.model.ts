@@ -1,3 +1,5 @@
+import {Post} from './post.model';
+
 export class User {
   id: number;
   firstName: string;
@@ -10,6 +12,6 @@ export class User {
 
   followers: User[];
   following: User[];
-  posts: any;
+  posts: Post[];
   sharedPosts: any;
 }

@@ -38,8 +38,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
         if (response) {
           if (response.token) {
             localStorage.setItem('X-AUTH-TOKEN', response.token);
-            console.log(JSON.stringify(response.user));
-            this.dataService.changeUser(response.user);
+            this.dataService.changeLoggedUser(response.user);
             this.router.navigateByUrl('home');
           }
         } else {

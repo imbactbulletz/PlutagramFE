@@ -6,13 +6,27 @@ import {User} from '../models/dto/user.model';
   providedIn: 'root'
 })
 export class DataService {
-  private userSource = new BehaviorSubject<User>(null);
-  public user = this.userSource.asObservable();
+  private loggedUserSource = new BehaviorSubject<User>(null);
+  private visitedUserSource = new BehaviorSubject<User>(null);
+  private searchedUsersSource = new BehaviorSubject<User[]>(null);
+
+  public loggedUser = this.loggedUserSource.asObservable();
+  public visitedUser = this.visitedUserSource.asObservable();
+
+  public searchedUsers = this.searchedUsersSource.asObservable();
 
   constructor() {
   }
 
-  changeUser(user: User) {
-    this.userSource.next(user);
+  changeLoggedUser(user: User) {
+    this.loggedUserSource.next(user);
+  }
+
+  changeVisitedUser(user: User) {
+    this.visitedUserSource.next(user);
+  }
+
+  changeSearchedUsers(users: User[]) {
+    this.searchedUsersSource.next(users);
   }
 }

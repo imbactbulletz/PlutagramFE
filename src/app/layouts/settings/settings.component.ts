@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {DataService} from '../../shared/services/data.service';
 import {Subscription} from 'rxjs';
 import {User} from '../../shared/models/dto/user.model';
@@ -10,7 +10,7 @@ import {RESTAPI} from '../../shared/rest-api-calls';
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss']
 })
-export class SettingsComponent implements OnInit {
+export class SettingsComponent implements OnInit, OnDestroy {
   defaultProfileImageUrl = 'https://scontent.fbeg1-1.fna.fbcdn.net/v/t1.0-9/10157211_10202990567340511_2368130898099636845_n.jpg?_nc_cat=106&_nc_ht=scontent.fbeg1-1.fna&oh=9313a64c8c3592781ce4608582a1f6ef&oe=5CC6D28E';
   user: User;
   imageFile;
@@ -22,7 +22,7 @@ export class SettingsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userSubscription = this.dataService.user.subscribe( user => {
+    this.userSubscription = this.dataService.loggedUser.subscribe(user => {
       this.user = user;
     });
   }
@@ -45,8 +45,7 @@ export class SettingsComponent implements OnInit {
     }
 
     this.http.put(RESTAPI.changeSettingsURL(), body).subscribe( (response: User) => {
-      console.log(body);
-      this.dataService.changeUser(response);
+      this.dataService.changeLoggedUser(response);
     });
   }
 
@@ -60,5 +59,9 @@ export class SettingsComponent implements OnInit {
     } else {
       return this.defaultProfileImageUrl;
     }
+  }
+
+  ngOnDestroy() {
+    this.userSubscription.unsubscribe();
   }
 }

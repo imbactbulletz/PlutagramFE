@@ -4,6 +4,8 @@ import {User} from '../../shared/models/dto/user.model';
 import {Subscription} from 'rxjs';
 import {RESTAPI} from '../../shared/rest-api-calls';
 import {DomSanitizer} from '@angular/platform-browser';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -15,10 +17,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   user: User;
   userSubscription: Subscription;
 
-  constructor(private dataService: DataService) {}
+  searchBarValue: string;
+  constructor(private http: HttpClient, private dataService: DataService, private router: Router ) {}
 
   ngOnInit() {
-    this.userSubscription = this.dataService.user.subscribe(user => this.user = user);
+    this.userSubscription = this.dataService.loggedUser.subscribe(user => this.user = user);
   }
 
   isLoggedIn() {
@@ -37,6 +40,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
     } else {
       return this.defaultProfileImageUrl;
     }
+  }
+
+  searchUsers() {
+
+    this.http.get(RESTAPI.getSearchUsersURL(), ).subscribe( (page: any) => {
+      const filteredUsers = [];
+
+      page.content.forEach( (user) => {
+        if (user.username.includes(this.searchBarValue)) {
+          filteredUsers.push(user);
+        }
+      });
+
+      this.dataService.changeSearchedUsers(filteredUsers);
+      this.router.navigateByUrl('search');
+    });
   }
 
   ngOnDestroy() {

@@ -14,6 +14,8 @@ import {CoreModule} from './core/core.module';
 import { ActivateComponent } from './layouts/activate/activate.component';
 import { HomeComponent } from './layouts/home/home.component';
 import { SettingsComponent } from './layouts/settings/settings.component';
+import { ProfileComponent } from './layouts/profile/profile.component';
+import {SearchedUsersComponent} from './layouts/searched.users/searched.users.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { SettingsComponent } from './layouts/settings/settings.component';
     ModalComponent,
     ActivateComponent,
     HomeComponent,
-    SettingsComponent
+    SettingsComponent,
+    ProfileComponent,
+    SearchedUsersComponent
   ],
   imports: [
     BrowserModule,

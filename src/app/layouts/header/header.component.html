@@ -19,9 +19,16 @@
 
     <!--Right side of navbar-->
     <ul class="navbar-nav">
+      <li *ngIf="isLoggedIn()" class="nav-item waves-light">
+        <form class="form-inline waves-light" (ngSubmit)="searchUsers()" mdbWavesEffect>
+          <div class="md-form my-0">
+            <input [(ngModel)]="searchBarValue" name="searchFormInput"  style="margin-right: 10px;" class="form-control mr-sm-2" type="text" placeholder="Search users" aria-label="Search">
+          </div>
+        </form>
+      </li>
       <!--Log out-->
-      <li *ngIf="user" class="nav-item waves-light avatar">
-        <a style="margin-top: 3px;" class="nav-link p-0" href="#" aria-haspopup="true" aria-expanded="false">
+      <li *ngIf="isLoggedIn()" class="nav-item waves-light avatar">
+        <a routerLink="/profile" style="margin-top: 3px;" class="nav-link p-0" href="#" aria-haspopup="true" aria-expanded="false">
           {{user.username }}
           <img *ngIf="user" style="max-height: 35px; max-width: 35px;" src="{{ displayPicture() }}" class="img-fluid rounded-circle z-depth-0"></a>
       </li>

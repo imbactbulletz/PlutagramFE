@@ -19,6 +19,16 @@ export abstract class RESTAPI {
 
   // CHANGE PROFILE SETTINGS
   public static changeSettingsURL() {
-    return this.baseUrl + '/user/update';
+    return this.baseUrl + '/loggedUser/update';
+  }
+
+  // CREATE A POST
+  public static getCreatePostURL() {
+    return this.baseUrl + '/post/save';
+  }
+
+  // GET ALL USERS
+  public static getSearchUsersURL() {
+    return this.baseUrl + '/user/findAll';
   }
 }

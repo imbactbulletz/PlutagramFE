@@ -1,0 +1,6 @@
+@import "~angular-bootstrap-md/scss/core/colors";
+
+.list-group-item.active {
+  background-color: $deep-orange-base;
+  border-color: $grey-lighten-3;
+}

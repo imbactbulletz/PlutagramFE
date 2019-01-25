@@ -1,0 +1,12 @@
+<div class="container col-sm-12 col-md-9 col-lg-8">
+  <div class="list-group w-100">
+    <h4>Search results:</h4>
+    <a (click)="visitUserProfile(user)" *ngFor="let user of searchedUsers" class="list-group-item waves-light" mdbWavesEffect>
+      <span class="float-left">
+               <img style="max-height: 50px;" src="{{ displayProfileImage(user) }}" class="rounded-circle" id="profileImage">
+               <span style="padding-left: 10px;"> {{ user.username }}</span>
+      </span>
+    </a>
+
+  </div>
+</div>

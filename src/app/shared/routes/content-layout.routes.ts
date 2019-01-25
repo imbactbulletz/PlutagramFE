@@ -5,6 +5,8 @@ import {ActivateComponent} from '../../layouts/activate/activate.component';
 import {HomeComponent} from '../../layouts/home/home.component';
 import {SettingsComponent} from '../../layouts/settings/settings.component';
 import {AuthGuard} from '../../core/guards/auth.guard';
+import {ProfileComponent} from '../../layouts/profile/profile.component';
+import {SearchedUsersComponent} from '../../layouts/searched.users/searched.users.component';
 
 export const content_routes: Routes = [
   {
@@ -30,8 +32,18 @@ export const content_routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'search',
+    component: SearchedUsersComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: '',
     component: HomeComponent,
     canActivate: [AuthGuard]
-  }
+  },
 ];
