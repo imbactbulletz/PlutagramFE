@@ -19,7 +19,7 @@ export abstract class RESTAPI {
 
   // CHANGE PROFILE SETTINGS
   public static changeSettingsURL() {
-    return this.baseUrl + '/loggedUser/update';
+    return this.baseUrl + '/user/update';
   }
 
   // CREATE A POST

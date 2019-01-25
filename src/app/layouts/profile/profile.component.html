@@ -17,7 +17,7 @@
           <!--Name-->
           <mdb-card-title>
             <!--Aligned username-->
-            <h4 *ngIf="user" style="text-align: center">{{ user.username }}</h4>
+            <h4 *ngIf="visitedUser || loggedUser" style="text-align: center">{{ visitedUser ? visitedUser.username : loggedUser.username }}</h4>
           </mdb-card-title>
         </mdb-card-body>
 
@@ -41,7 +41,7 @@
 
     <!--Content Area-->
     <div class="col-sm-12 col-md-12 col-lg-9">
-      <mdb-card style="margin-bottom: 40px;" class="testimonial-card">
+      <mdb-card *ngIf="sameUser()" style="margin-bottom: 40px;" class="testimonial-card">
         <!--Bacground color-->
         <div class="card-up indigo lighten-1">
         </div>
@@ -75,7 +75,8 @@
 
 
       <!--Card-->
-      <mdb-card style="margin-bottom: 40px;" *ngFor="let post of user.posts" cascade="true" wider="true" class="card-ecommerce">
+      <div *ngIf="!sameUser()">
+      <mdb-card style="margin-bottom: 40px;" *ngFor="let post of visitedUser.posts" cascade="true" wider="true" class="card-ecommerce">
         <!--Card image-->
         <div class="view view-cascade overlay waves-light" mdbWavesEffect>
           <mdb-card-img src="{{ getFullPhotoUrl(post) }}"
@@ -112,6 +113,49 @@
         </mdb-card-footer>
         <!--Card content-->
       </mdb-card>
+      </div>
+      <!--Card-->
+
+      <!--Card-->
+      <div *ngIf="sameUser()">
+      <mdb-card style="margin-bottom: 40px;" *ngFor="let post of loggedUser.posts" cascade="true" wider="true" class="card-ecommerce">
+        <!--Card image-->
+        <div class="view view-cascade overlay waves-light" mdbWavesEffect>
+          <mdb-card-img src="{{ getFullPhotoUrl(post) }}"
+                        alt="sample photo"></mdb-card-img>
+          <a>
+            <div class="mask rgba-white-slight"></div>
+          </a>
+        </div>
+        <!--Card image-->
+        <!--Card content-->
+        <mdb-card-body cascade="true" class="text-center no-padding">
+          <!--Category & Title-->
+          <a href="" class="float-left text-muted">
+            <i class="fas fa-calendar ml-3"></i> {{ getPostDate(post)}}
+          </a>
+
+          <mdb-card-title>
+            <h4 class="card-title p-4 text-center">
+              <strong>
+                {{ post.description }}
+              </strong>
+            </h4>
+          </mdb-card-title>
+        </mdb-card-body>
+        <mdb-card-footer>
+            <span class="float-right">
+              <a class="" data-toggle="tooltip" data-placement="top" title="Likes">
+                <i class="fas fa-thumbs-up ml-3"></i> {{ getPostLikes(post) }}
+              </a>
+              <a class="" data-toggle="tooltip" data-placement="top" title="Comments">
+                <i class="fas fa-comment-alt ml-3"></i> {{ getPostComments(post) }}
+              </a>
+            </span>
+        </mdb-card-footer>
+        <!--Card content-->
+      </mdb-card>
+      </div>
       <!--Card-->
 
     </div>

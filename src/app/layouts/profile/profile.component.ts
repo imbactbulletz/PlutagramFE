@@ -14,7 +14,8 @@ import {Post} from '../../shared/models/dto/post.model';
 export class ProfileComponent implements OnInit, OnDestroy {
   defaultProfileImageUrl = 'https://scontent.fbeg1-1.fna.fbcdn.net/v/t1.0-9/10157211_10202990567340511_2368130898099636845_n.jpg?_nc_cat=106&_nc_ht=scontent.fbeg1-1.fna&oh=9313a64c8c3592781ce4608582a1f6ef&oe=5CC6D28E';
 
-  user: User;
+  loggedUser: User;
+  visitedUser: User;
   tmpPostDescription;
 
   imageFile;
@@ -25,21 +26,43 @@ export class ProfileComponent implements OnInit, OnDestroy {
   constructor(private http: HttpClient, private dataService: DataService) { }
 
   ngOnInit() {
-    this.userSubscription = this.dataService.loggedUser.subscribe(user => {
-      this.user = user;
+    this.userSubscription = new Subscription();
 
-      this.user.posts.sort( (a, b) => {
-        return a.createdAt < b.createdAt ? 1 : (a.createdAt > b.createdAt ? -1 : 0);
-      });
-    } );
+    this.userSubscription.add(this.dataService.loggedUser.subscribe(user => {
+      this.loggedUser = user;
+
+      if (this.loggedUser.posts) {
+        this.loggedUser.posts.sort( (a, b) => {
+          return a.createdAt < b.createdAt ? 1 : (a.createdAt > b.createdAt ? -1 : 0);
+        });
+      }
+    } ));
+
+    this.userSubscription.add(this.dataService.visitedUser.subscribe( visitedUser => {
+        this.visitedUser = visitedUser;
+
+      console.log(JSON.stringify(this.visitedUser));
+      if (this.visitedUser.posts) {
+        this.visitedUser.posts.sort( (a, b) => {
+          return a.createdAt < b.createdAt ? 1 : (a.createdAt > b.createdAt ? -1 : 0);
+        });
+      }
+    }));
   }
 
   displayPicture() {
-    if (this.user.profileImageUrl) {
-      return RESTAPI.photoServerUrl + this.user.profileImageUrl;
-    } else {
-      return this.defaultProfileImageUrl;
+    if (this.visitedUser) {
+      if (this.visitedUser.profileImageUrl) {
+        return RESTAPI.photoServerUrl + this.visitedUser.profileImageUrl;
+      } else {
+          return this.defaultProfileImageUrl;
+      }
     }
+
+    if (this.loggedUser.profileImageUrl) {
+        return RESTAPI.photoServerUrl + this.loggedUser.profileImageUrl;
+      }
+
   }
 
   onFileChanged(event) {
@@ -60,12 +83,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     body['image'] = this.imageSrc.slice('data:image/png;base64,'.length, this.imageSrc.length);
 
 
-    this.http.post(RESTAPI.getCreatePostURL(), body).subscribe( (post: Post) => {
-      this.user.posts.unshift(post);
-
-      this.user.posts.sort( (a, b) => {
-        return a.createdAt.localeCompare(b.createdAt);
-      });
+    this.loggedUser.posts.sort( (a, b) => {
+      return a.createdAt < b.createdAt ? 1 : (a.createdAt > b.createdAt ? -1 : 0);
     });
   }
 
@@ -74,15 +93,27 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   getFollowers () {
-    return this.user.followers === undefined ? 0 : this.user.followers.length;
+    if (this.visitedUser) {
+      return this.visitedUser.followers === undefined ? 0 : this.visitedUser.followers.length;
+    } else {
+      return this.loggedUser.followers === undefined ? 0 : this.loggedUser.followers.length;
+    }
   }
 
   getFollowing() {
-    return this.user.following === undefined ? 0 : this.user.following.length;
+    if (this.visitedUser) {
+      return this.visitedUser.following === undefined ? 0 : this.visitedUser.following.length;
+    } else {
+      return this.loggedUser.following === undefined ? 0 : this.loggedUser.following.length;
+    }
   }
 
   getPostCount() {
-    return this.user.posts === undefined ? 0 : this.user.posts.length;
+    if (this.visitedUser) {
+      return this.visitedUser.posts === undefined ? 0 : this.visitedUser.posts.length;
+    } else {
+      return this.loggedUser.posts === undefined ? 0 : this.loggedUser.posts.length;
+    }
   }
 
   getPostDate(post: Post) {
@@ -98,6 +129,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
     return post.comments === undefined ? 0 : post.comments.length;
   }
 
+  sameUser() {
+    if (!this.visitedUser) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   ngOnDestroy() {
     this.userSubscription.unsubscribe();
   }

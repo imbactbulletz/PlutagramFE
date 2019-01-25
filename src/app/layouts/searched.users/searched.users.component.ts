@@ -34,6 +34,7 @@ export class SearchedUsersComponent implements OnInit, OnDestroy {
   }
 
   visitUserProfile(user: User) {
+    console.log('Visiting: ' + user.username);
     this.dataService.changeVisitedUser(user);
     this.router.navigateByUrl('profile');
   }
