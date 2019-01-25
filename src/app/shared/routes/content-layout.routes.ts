@@ -7,6 +7,7 @@ import {SettingsComponent} from '../../layouts/settings/settings.component';
 import {AuthGuard} from '../../core/guards/auth.guard';
 import {ProfileComponent} from '../../layouts/profile/profile.component';
 import {SearchedUsersComponent} from '../../layouts/searched.users/searched.users.component';
+import {MyprofileComponent} from '../../layouts/myprofile/myprofile.component';
 
 export const content_routes: Routes = [
   {
@@ -34,6 +35,11 @@ export const content_routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'myprofile',
+    component: MyprofileComponent,
     canActivate: [AuthGuard]
   },
   {

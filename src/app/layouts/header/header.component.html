@@ -28,7 +28,7 @@
       </li>
       <!--Log out-->
       <li *ngIf="isLoggedIn()" class="nav-item waves-light avatar">
-        <a routerLink="/profile" style="margin-top: 3px;" class="nav-link p-0" href="#" aria-haspopup="true" aria-expanded="false">
+        <a routerLink="/myprofile" style="margin-top: 3px;" class="nav-link p-0" href="#" aria-haspopup="true" aria-expanded="false">
           {{user.username }}
           <img *ngIf="user" style="max-height: 35px; max-width: 35px;" src="{{ displayPicture() }}" class="img-fluid rounded-circle z-depth-0"></a>
       </li>

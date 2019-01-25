@@ -1,0 +1,121 @@
+<div class="container col-sm-8 col-md-7">
+  <div class="row">
+    <!--Profile information-->
+    <div class="col-sm-12 col-md-12 col-lg-3">
+      <mdb-card style="margin-bottom: 40px;" class="testimonial-card">
+
+        <div class="deep-orange lighten-1">
+          <!--Avatar-->
+          <div style="text-align: center;" class="avatar p-3">
+            <img style="width: 90%; height: 90%;" src="{{ displayPicture() }}" class="rounded-circle"
+                 id="profileImage">
+          </div>
+        </div>
+
+
+        <mdb-card-body>
+          <!--Name-->
+          <mdb-card-title>
+            <!--Aligned username-->
+            <h4 *ngIf="loggedUser" style="text-align: center">{{ loggedUser.username }}</h4>
+          </mdb-card-title>
+        </mdb-card-body>
+
+        <mdb-card-footer class="deep-orange lighten-1 text-center">
+          <ul class="list-unstyled list-inline font-small mt-3">
+            <li class="list-inline-item pr-2 white-text">
+              <i class="fas fa-user pr-1"></i>{{ getFollowers() }}
+            </li>
+            <li class="list-inline-item pr-2">
+              <a href="#" class="white-text">
+                <i class="far fa-user pr-1"></i>{{ getFollowing() }}</a>
+            </li>
+            <li class="list-inline-item">
+              <a href="#" class="white-text">
+                <i class="fa fa-clone pr-1"> </i>{{ getPostCount() }}</a>
+            </li>
+          </ul>
+        </mdb-card-footer>
+      </mdb-card>
+    </div>
+
+    <!--Content Area-->
+    <div class="col-sm-12 col-md-12 col-lg-9">
+      <mdb-card style="margin-bottom: 40px;" class="testimonial-card">
+        <!--Bacground color-->
+        <div class="card-up indigo lighten-1">
+        </div>
+
+        <!--Avatar-->
+        <div class="avatar mx-auto">
+          <mdb-card-img *ngIf="imageSrc" src="{{ imageSrc }}"
+                        alt="sample photo"></mdb-card-img>
+        </div>
+
+        <mdb-card-body>
+          <mdb-card-title>
+            <h4>Publish a post</h4>
+          </mdb-card-title>
+          <!--Name-->
+          <div class="md-form">
+            <textarea [(ngModel)]="tmpPostDescription" type="text" id="form7" class="md-textarea w-100" mdbInputDirective></textarea>
+            <label for="form7">Enter a description</label>
+          </div>
+          <hr>
+          <div class="text-right">
+            <input
+              style="display: none"
+              type="file" (change)="onFileChanged($event)"
+              #fileInput>
+            <button mdbBtn type="button" color="deep-orange" outline="true" mdbWavesEffect (click)="fileInput.click()">Photo</button>
+            <button mdbBtn type="button" color="deep-orange" mdbWavesEffect (click)="post()">Post</button>
+          </div>
+        </mdb-card-body>
+      </mdb-card>
+
+
+      <!--Card-->
+      <div>
+        <mdb-card style="margin-bottom: 40px;" *ngFor="let post of loggedUser.posts" cascade="true" wider="true" class="card-ecommerce">
+          <!--Card image-->
+          <div class="view view-cascade overlay waves-light" mdbWavesEffect>
+            <mdb-card-img src="{{ getFullPhotoUrl(post) }}"
+                          alt="sample photo"></mdb-card-img>
+            <a>
+              <div class="mask rgba-white-slight"></div>
+            </a>
+          </div>
+          <!--Card image-->
+          <!--Card content-->
+          <mdb-card-body cascade="true" class="text-center no-padding">
+            <!--Category & Title-->
+            <a href="" class="float-left text-muted">
+              <i class="fas fa-calendar ml-3"></i> {{ getPostDate(post)}}
+            </a>
+
+            <mdb-card-title>
+              <h4 class="card-title p-4 text-center">
+                <strong>
+                  {{ post.description }}
+                </strong>
+              </h4>
+            </mdb-card-title>
+          </mdb-card-body>
+          <mdb-card-footer>
+            <span class="float-right">
+              <a class="" data-toggle="tooltip" data-placement="top" title="Likes">
+                <i class="fas fa-thumbs-up ml-3"></i> {{ getPostLikes(post) }}
+              </a>
+              <a class="" data-toggle="tooltip" data-placement="top" title="Comments">
+                <i class="fas fa-comment-alt ml-3"></i> {{ getPostComments(post) }}
+              </a>
+            </span>
+          </mdb-card-footer>
+          <!--Card content-->
+        </mdb-card>
+      </div>
+      <!--Card-->
+
+    </div>
+  </div>
+</div>

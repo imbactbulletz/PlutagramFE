@@ -3,7 +3,7 @@ import {User} from '../../shared/models/dto/user.model';
 import {Subscription} from 'rxjs';
 import {DataService} from '../../shared/services/data.service';
 import {RESTAPI} from '../../shared/rest-api-calls';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Post} from '../../shared/models/dto/post.model';
 
 @Component({
@@ -14,9 +14,10 @@ import {Post} from '../../shared/models/dto/post.model';
 export class ProfileComponent implements OnInit, OnDestroy {
   defaultProfileImageUrl = 'https://scontent.fbeg1-1.fna.fbcdn.net/v/t1.0-9/10157211_10202990567340511_2368130898099636845_n.jpg?_nc_cat=106&_nc_ht=scontent.fbeg1-1.fna&oh=9313a64c8c3592781ce4608582a1f6ef&oe=5CC6D28E';
 
-  loggedUser: User;
   visitedUser: User;
-  tmpPostDescription;
+  loggedUser: User;
+
+  following: boolean;
 
   imageFile;
   imageSrc;
@@ -28,45 +29,50 @@ export class ProfileComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userSubscription = new Subscription();
 
-    this.userSubscription.add(this.dataService.loggedUser.subscribe(user => {
-      this.loggedUser = user;
-
-      if (this.loggedUser.posts) {
-        this.loggedUser.posts.sort( (a, b) => {
-          return a.createdAt < b.createdAt ? 1 : (a.createdAt > b.createdAt ? -1 : 0);
-        });
-      }
-    } ));
+    this.userSubscription.add(this.dataService.loggedUser.subscribe( loggedUser => {
+      this.loggedUser = loggedUser;
+    }));
 
     this.userSubscription.add(this.dataService.visitedUser.subscribe( visitedUser => {
         this.visitedUser = visitedUser;
 
-      console.log(JSON.stringify(this.visitedUser));
-      if (this.visitedUser.posts) {
+        if (this.visitedUser.followers) {
+          this.visitedUser.followers.forEach( (follower: User) => {
+            if (this.loggedUser.username === follower.username) {
+              this.following = true;
+              return;
+            }
+          });
+        }
+
+      if (this.visitedUser && this.visitedUser.posts) {
         this.visitedUser.posts.sort( (a, b) => {
           return a.createdAt < b.createdAt ? 1 : (a.createdAt > b.createdAt ? -1 : 0);
         });
       }
     }));
+
+    const params = new HttpParams()
+      .set('id', this.visitedUser.id + '');
+
+
+    this.http.get(RESTAPI.getUserByIdURL(), {params: params }).subscribe( (user: User) => {
+
+      this.visitedUser = user;
+    });
   }
 
   displayPicture() {
     if (this.visitedUser) {
       if (this.visitedUser.profileImageUrl) {
         return RESTAPI.photoServerUrl + this.visitedUser.profileImageUrl;
-      } else {
-          return this.defaultProfileImageUrl;
       }
     }
 
-    if (this.loggedUser.profileImageUrl) {
-        return RESTAPI.photoServerUrl + this.loggedUser.profileImageUrl;
-      }
-
+    return this.defaultProfileImageUrl;
   }
 
   onFileChanged(event) {
-    console.log('File changed!');
     this.imageFile = event.target.files[0];
 
     const reader = new FileReader();
@@ -75,16 +81,60 @@ export class ProfileComponent implements OnInit, OnDestroy {
     reader.readAsDataURL(this.imageFile);
   }
 
-  post() {
-    const body = {
-      'description': this.tmpPostDescription
-    };
+  followUser() {
+    let params = new HttpParams()
+      .set('userId', this.visitedUser.id + '');
 
-    body['image'] = this.imageSrc.slice('data:image/png;base64,'.length, this.imageSrc.length);
+    this.http.post(RESTAPI.getFollowUserURL(), null, {params: params}).subscribe( (successful: boolean) => {
+        this.following = successful;
 
+      params = new HttpParams()
+        .set('id', this.visitedUser.id + '');
 
-    this.loggedUser.posts.sort( (a, b) => {
-      return a.createdAt < b.createdAt ? 1 : (a.createdAt > b.createdAt ? -1 : 0);
+      this.http.get(RESTAPI.getUserByIdURL(), {params: params }).subscribe( (user: User) => {
+        console.log('Got user on follow: ' + JSON.stringify(user));
+        this.visitedUser = user;
+
+        if (this.visitedUser.followers) {
+          this.visitedUser.followers.forEach( (follower: User) => {
+            if (this.loggedUser.username === follower.username) {
+              this.following = true;
+              return;
+            }
+          });
+        }
+        this.dataService.changeVisitedUser(user);
+      });
+    });
+
+  }
+
+  unfollowUser() {
+    let params = new HttpParams()
+      .set('userId', this.visitedUser.id + '');
+
+    this.http.post(RESTAPI.getUnfollowUserURL(), null, {params: params}).subscribe( (successful: boolean) => {
+      this.following = !successful;
+
+      params = new HttpParams()
+        .set('id', this.visitedUser.id + '');
+
+      this.http.get(RESTAPI.getUserByIdURL(), {params: params }).subscribe( (user: User) => {
+        console.log('Got user on unfollow: ' + JSON.stringify(user));
+        this.visitedUser = user;
+
+        if (this.visitedUser.followers) {
+          let foundFollower = false;
+          this.visitedUser.followers.forEach( (follower: User) => {
+            if (this.loggedUser.username === follower.username) {
+              foundFollower = true;
+              return;
+            }
+          });
+          this.following = foundFollower;
+        }
+        this.dataService.changeVisitedUser(user);
+      });
     });
   }
 
@@ -93,27 +143,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   getFollowers () {
-    if (this.visitedUser) {
-      return this.visitedUser.followers === undefined ? 0 : this.visitedUser.followers.length;
-    } else {
-      return this.loggedUser.followers === undefined ? 0 : this.loggedUser.followers.length;
+      return this.visitedUser.followers ? this.visitedUser.followers.length : 0;
     }
-  }
 
   getFollowing() {
-    if (this.visitedUser) {
-      return this.visitedUser.following === undefined ? 0 : this.visitedUser.following.length;
-    } else {
-      return this.loggedUser.following === undefined ? 0 : this.loggedUser.following.length;
-    }
+      return this.visitedUser.following ? this.visitedUser.following.length : 0;
   }
 
   getPostCount() {
-    if (this.visitedUser) {
-      return this.visitedUser.posts === undefined ? 0 : this.visitedUser.posts.length;
-    } else {
-      return this.loggedUser.posts === undefined ? 0 : this.loggedUser.posts.length;
-    }
+      return this.visitedUser.posts ? this.visitedUser.posts.length : 0;
   }
 
   getPostDate(post: Post) {
@@ -129,13 +167,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     return post.comments === undefined ? 0 : post.comments.length;
   }
 
-  sameUser() {
-    if (!this.visitedUser) {
-      return true;
-    } else {
-      return false;
-    }
-  }
   ngOnDestroy() {
     this.userSubscription.unsubscribe();
   }

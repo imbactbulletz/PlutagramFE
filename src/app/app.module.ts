@@ -16,6 +16,7 @@ import { HomeComponent } from './layouts/home/home.component';
 import { SettingsComponent } from './layouts/settings/settings.component';
 import { ProfileComponent } from './layouts/profile/profile.component';
 import {SearchedUsersComponent} from './layouts/searched.users/searched.users.component';
+import { MyprofileComponent } from './layouts/myprofile/myprofile.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import {SearchedUsersComponent} from './layouts/searched.users/searched.users.co
     HomeComponent,
     SettingsComponent,
     ProfileComponent,
-    SearchedUsersComponent
+    SearchedUsersComponent,
+    MyprofileComponent
   ],
   imports: [
     BrowserModule,

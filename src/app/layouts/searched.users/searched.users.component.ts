@@ -4,6 +4,7 @@ import {Subscription} from 'rxjs';
 import {DataService} from '../../shared/services/data.service';
 import {RESTAPI} from '../../shared/rest-api-calls';
 import {Router} from '@angular/router';
+import {HttpClient, HttpParams} from '@angular/common/http';
 
 @Component({
   selector: 'app-searched.users',
@@ -16,7 +17,8 @@ export class SearchedUsersComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription;
 
-  constructor(private dataService: DataService, private router: Router) {
+  constructor(private dataService: DataService, private router: Router,
+              private http: HttpClient) {
   }
 
   ngOnInit() {
@@ -34,9 +36,15 @@ export class SearchedUsersComponent implements OnInit, OnDestroy {
   }
 
   visitUserProfile(user: User) {
-    console.log('Visiting: ' + user.username);
-    this.dataService.changeVisitedUser(user);
-    this.router.navigateByUrl('profile');
+
+    const params = new HttpParams()
+      .set('id', user.id + '');
+
+
+    this.http.get(RESTAPI.getUserByIdURL(), {params: params }).subscribe( (user1: User) => {
+      this.dataService.changeVisitedUser(user1);
+      this.router.navigateByUrl('profile');
+    });
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();
