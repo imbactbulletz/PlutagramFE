@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {User} from '../../shared/models/dto/user.model';
 import {Subscription} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {DataService} from '../../shared/services/data.service';
 import {RESTAPI} from '../../shared/rest-api-calls';
 import {Post} from '../../shared/models/dto/post.model';
@@ -16,6 +16,7 @@ export class MyprofileComponent implements OnInit, OnDestroy {
 
   loggedUser: User;
   tmpPostDescription;
+  tmpCommentContent;
 
   imageFile;
   imageSrc;
@@ -30,13 +31,24 @@ export class MyprofileComponent implements OnInit, OnDestroy {
 
     this.userSubscription.add(this.dataService.loggedUser.subscribe(user => {
       this.loggedUser = user;
-
       if (this.loggedUser.posts) {
         this.loggedUser.posts.sort((a, b) => {
           return a.createdAt < b.createdAt ? 1 : (a.createdAt > b.createdAt ? -1 : 0);
         });
       }
     }));
+
+    const params = new HttpParams()
+      .set('id', this.loggedUser.id + '');
+    this.http.get(RESTAPI.getUserByIdURL(), {params: params}).subscribe( (user: User) => {
+      this.loggedUser = user;
+      this.dataService.changeLoggedUser(user);
+      if (this.loggedUser.posts) {
+        this.loggedUser.posts.sort((a, b) => {
+          return a.createdAt < b.createdAt ? 1 : (a.createdAt > b.createdAt ? -1 : 0);
+        });
+      }
+    });
   }
 
   displayPicture() {
@@ -64,10 +76,46 @@ export class MyprofileComponent implements OnInit, OnDestroy {
     body['image'] = this.imageSrc.slice('data:image/png;base64,'.length, this.imageSrc.length);
 
     this.http.post(RESTAPI.getCreatePostURL(), body).subscribe((post: Post) => {
-      this.loggedUser.posts.unshift(post);
-      this.loggedUser.posts.sort((a, b) => {
-        return a.createdAt < b.createdAt ? 1 : (a.createdAt > b.createdAt ? -1 : 0);
+      const params = new HttpParams()
+        .set('id', this.loggedUser.id + '');
+      this.http.get(RESTAPI.getUserByIdURL(), {params: params}).subscribe( (user: User) => {
+        this.loggedUser = user;
+
+        this.loggedUser.posts.sort((a, b) => {
+          return a.createdAt < b.createdAt ? 1 : (a.createdAt > b.createdAt ? -1 : 0);
+        });
       });
+    });
+  }
+
+  postComment(post: Post) {
+    const body = {
+      'postId': post.id + '',
+      'content': this.tmpCommentContent
+    };
+
+    this.http.post(RESTAPI.getPostCommentUrl(), body).subscribe( (recievedPost: Post) => {
+      if (recievedPost) {
+        console.log('recieved post' + JSON.stringify(recievedPost));
+
+          if (this.loggedUser.posts) {
+            for (let i = 0; i < this.loggedUser.posts.length; i++) {
+              if (this.loggedUser.posts[i].id === recievedPost.id) {
+                this.loggedUser.posts[i] = recievedPost;
+                return;
+              }
+            }
+          } else {
+            if (this.loggedUser.sharedPosts) {
+              for (let i = 0; i < this.loggedUser.sharedPosts.length; i++) {
+                if (this.loggedUser.sharedPosts[i].id === recievedPost.id) {
+                  this.loggedUser.sharedPosts[i] = recievedPost;
+                  return;
+                }
+              }
+            }
+          }
+      }
     });
   }
 
@@ -93,11 +141,11 @@ export class MyprofileComponent implements OnInit, OnDestroy {
   }
 
   getPostLikes(post: Post) {
-    return post.likes === undefined ? 0 : post.likes;
+    return post.likes ? post.totalLikes : 0;
   }
 
   getPostComments(post: Post) {
-    return post.comments === undefined ? 0 : post.comments.length;
+    return post.comments ? post.totalComments : 0;
   }
 
   ngOnDestroy() {

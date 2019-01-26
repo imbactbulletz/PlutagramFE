@@ -17,7 +17,7 @@
           <!--Name-->
           <mdb-card-title>
             <!--Aligned username-->
-            <h4 *ngIf="visitedUser" style="text-align: center">{{ visitedUser.username  }}</h4>
+            <h4 *ngIf="visitedUser" style="text-align: center">{{ visitedUser.username }}</h4>
           </mdb-card-title>
         </mdb-card-body>
 
@@ -36,8 +36,10 @@
             </li>
           </ul>
           <span class="text-center">
-              <button *ngIf="!following" mdbBtn type="button" color="white" [outline]="true" size="sm" mdbWavesEffect (click)="followUser()">Follow</button>
-              <button *ngIf="following" mdbBtn type="button" color="black" [outline]="true" size="sm" mdbWavesEffect (click)="unfollowUser()">Unfollow</button>
+              <button *ngIf="!following" mdbBtn type="button" color="white" [outline]="true" size="sm" mdbWavesEffect
+                      (click)="followUser()">Follow</button>
+              <button *ngIf="following" mdbBtn type="button" color="black" [outline]="true" size="sm" mdbWavesEffect
+                      (click)="unfollowUser()">Unfollow</button>
           </span>
         </mdb-card-footer>
       </mdb-card>
@@ -48,43 +50,70 @@
 
       <!--Card-->
       <div *ngIf="following">
-      <mdb-card style="margin-bottom: 40px;" *ngFor="let post of visitedUser.posts" cascade="true" wider="true" class="card-ecommerce">
-        <!--Card image-->
-        <div class="view view-cascade overlay waves-light" mdbWavesEffect>
-          <mdb-card-img src="{{ getFullPhotoUrl(post) }}"
-                        alt="sample photo"></mdb-card-img>
-          <a>
-            <div class="mask rgba-white-slight"></div>
-          </a>
-        </div>
-        <!--Card image-->
-        <!--Card content-->
-        <mdb-card-body cascade="true" class="text-center no-padding">
-          <!--Category & Title-->
-          <a href="" class="float-left text-muted">
-            <i class="fas fa-calendar ml-3"></i> {{ getPostDate(post)}}
-          </a>
+        <mdb-card style="margin-bottom: 40px;" *ngFor="let post of visitedUser.posts" cascade="true" wider="true"
+                  class="card-ecommerce">
+          <!--Card image-->
+          <div class="view view-cascade overlay waves-light" mdbWavesEffect>
+            <mdb-card-img src="{{ getFullPhotoUrl(post) }}"
+                          alt="sample photo"></mdb-card-img>
+            <a>
+              <div class="mask rgba-white-slight"></div>
+            </a>
+          </div>
+          <!--Card image-->
+          <!--Card content-->
+          <mdb-card-body cascade="true" class="text-center no-padding">
+            <!--Category & Title-->
+            <a href="" class="float-left text-muted">
+              <i class="fas fa-calendar ml-3"></i> {{ getPostDate(post)}}
+            </a>
 
-          <mdb-card-title>
-            <h4 class="card-title p-4 text-center">
-              <strong>
-                {{ post.description }}
-              </strong>
-            </h4>
-          </mdb-card-title>
-        </mdb-card-body>
-        <mdb-card-footer>
+            <mdb-card-title>
+              <h4 class="card-title p-4 text-center">
+                <strong>
+                  {{ post.description }}
+                </strong>
+              </h4>
+            </mdb-card-title>
+          </mdb-card-body>
+          <mdb-card-footer>
             <span class="float-right">
-              <a class="" data-toggle="tooltip" data-placement="top" title="Likes">
+
+              <a *ngIf="likedPost(post) === false" (click)="like(post)" data-toggle="tooltip" data-placement="top" title="Likes">
                 <i class="fas fa-thumbs-up ml-3"></i> {{ getPostLikes(post) }}
               </a>
-              <a class="" data-toggle="tooltip" data-placement="top" title="Comments">
+
+
+              <a *ngIf="likedPost(post) === true" (click)="unlike(post)" data-toggle="tooltip" data-placement="top" title="Likes">
+                <i class="far fa-thumbs-up ml-3"></i> {{ getPostLikes(post) }}
+              </a>
+
+              <a data-toggle="tooltip" data-placement="top" title="Comments">
                 <i class="fas fa-comment-alt ml-3"></i> {{ getPostComments(post) }}
               </a>
+
+              <a *ngIf="!sharedPost(post)" (click)="sharePost(post)" data-toggle="tooltip" data-placement="top" title="Share">
+                <i class="fas fa-share-alt-square ml-3"></i>
+              </a>
             </span>
-        </mdb-card-footer>
-        <!--Card content-->
-      </mdb-card>
+          </mdb-card-footer>
+          <div *ngIf="post.comments">
+            <div *ngFor="let comment of post.comments">
+              <app-comment [comment]="comment"></app-comment>
+            </div>
+          </div>
+          <span class="w-100">
+            <div class="md-form amber-textarea active-amber-textarea-2">
+              <textarea [(ngModel)]="tmpCommentContent" type="text" id="form8" class="md-textarea form-control" mdbInputDirective></textarea>
+              <label for="form8">Leave a comment</label>
+                            <div class="float-right">
+                <button (click)="postComment(post)" mdbBtn type="button" color="deep-orange" mdbWavesEffect>Send</button>
+              </div>
+            </div>
+          </span>
+
+          <!--Card content-->
+        </mdb-card>
       </div>
       <!--Card-->
     </div>

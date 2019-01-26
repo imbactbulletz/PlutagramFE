@@ -7,7 +7,7 @@ export class Post {
   updatedAt: string;
   totalLikes: number;
   totalComments: number;
-  comments: any[];
+  comments: Comment[];
   likes: any[];
-
+  shared: boolean;
 }

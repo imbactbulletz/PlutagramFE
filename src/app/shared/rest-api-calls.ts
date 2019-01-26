@@ -1,6 +1,6 @@
 export abstract class RESTAPI {
-  static baseUrl = 'http://192.168.25.178:8080';
-  static photoServerUrl = 'http://localhost:1234/WebServer/Documents';
+  static baseUrl = 'http://192.168.0.12:8080';
+  static photoServerUrl = 'http://localhost/WebServer/Documents';
 
   // SIGN UP
   public static getSignUpURL() {
@@ -38,7 +38,7 @@ export abstract class RESTAPI {
   }
 
   // GET POSTS
-  public static getPostsURL(){
+  public static getPostsURL() {
     return this.baseUrl + '/user/findAll';
   }
 
@@ -50,5 +50,25 @@ export abstract class RESTAPI {
   // UNFOLLOW USER
   public static getUnfollowUserURL() {
     return this.baseUrl + '/user/unfollow';
+  }
+
+  // LIKE POST
+  public static getLikePostURL() {
+    return this.baseUrl + '/post/addLikeToPost';
+  }
+
+  // UNLIKE POST
+  public static getUnlikePostURL() {
+    return this.baseUrl + '/post/addUnlikeToPost';
+  }
+
+  // SHARE POST
+  public static getSharePostURL() {
+    return this.baseUrl + '/post/sharePost';
+  }
+
+  // POST COMMENT
+  public static getPostCommentUrl() {
+    return this.baseUrl + '/post/addCommentToPost';
   }
 }

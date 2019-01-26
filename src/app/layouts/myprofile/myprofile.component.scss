@@ -64,3 +64,27 @@ input.form-control.validate-success.ng-valid.ng-touched + label,
 .md-textarea.validate-success.ng-valid + label {
   color: $deep-orange-accent-1 !important;
 }
+
+@import "~angular-bootstrap-md/scss/core/colors";
+
+.active-amber-textarea-2 textarea.md-textarea {
+  border-bottom: 1px solid $grey-base;
+  box-shadow: 0 1px 0 0 $grey-base;
+}
+.active-amber-textarea-2.md-form label.active {
+  color: $grey-base;
+}
+.active-amber-textarea-2.md-form label {
+  color: $grey-base;
+}
+
+.active-orange-textarea-2 textarea.md-textarea {
+  border-bottom: 1px solid $deep-orange-base;
+  box-shadow: 0 1px 0 0 $deep-orange-base;
+}
+.active-orange-textarea-2.md-form label.active {
+  color: $deep-orange-base;
+}
+.active-orange-textarea-2.md-form label {
+  color: $deep-orange-base;
+}

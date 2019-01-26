@@ -58,7 +58,8 @@
           </mdb-card-title>
           <!--Name-->
           <div class="md-form">
-            <textarea [(ngModel)]="tmpPostDescription" type="text" id="form7" class="md-textarea w-100" mdbInputDirective></textarea>
+            <textarea [(ngModel)]="tmpPostDescription" type="text" id="form7" class="md-textarea w-100 form-control"
+                      mdbInputDirective></textarea>
             <label for="form7">Enter a description</label>
           </div>
           <hr>
@@ -67,7 +68,9 @@
               style="display: none"
               type="file" (change)="onFileChanged($event)"
               #fileInput>
-            <button mdbBtn type="button" color="deep-orange" outline="true" mdbWavesEffect (click)="fileInput.click()">Photo</button>
+            <button mdbBtn type="button" color="deep-orange" outline="true" mdbWavesEffect (click)="fileInput.click()">
+              Photo
+            </button>
             <button mdbBtn type="button" color="deep-orange" mdbWavesEffect (click)="post()">Post</button>
           </div>
         </mdb-card-body>
@@ -75,8 +78,63 @@
 
 
       <!--Card-->
-      <div>
-        <mdb-card style="margin-bottom: 40px;" *ngFor="let post of loggedUser.posts" cascade="true" wider="true" class="card-ecommerce">
+
+      <mdb-card style="margin-bottom: 40px;" *ngFor="let post of loggedUser.posts" cascade="true" wider="true"
+                class="card-ecommerce">
+        <!--Card image-->
+        <div class="view view-cascade overlay waves-light" mdbWavesEffect>
+          <mdb-card-img src="{{ getFullPhotoUrl(post) }}"
+                        alt="sample photo"></mdb-card-img>
+          <a>
+            <div class="mask rgba-white-slight"></div>
+          </a>
+        </div>
+        <!--Card image-->
+        <!--Card content-->
+        <mdb-card-body cascade="true" class="text-center no-padding">
+          <!--Category & Title-->
+          <a href="" class="float-left text-muted">
+            <i class="fas fa-calendar ml-3"></i> {{ getPostDate(post)}}
+          </a>
+
+          <mdb-card-title>
+            <h4 class="card-title p-4 text-center">
+              <strong>
+                {{ post.description }}
+              </strong>
+            </h4>
+          </mdb-card-title>
+        </mdb-card-body>
+        <mdb-card-footer>
+            <span class="float-right">
+              <a class="" data-toggle="tooltip" data-placement="top" title="Likes">
+                <i class="fas fa-thumbs-up ml-3"></i> {{ getPostLikes(post) }}
+              </a>
+              <a class="" data-toggle="tooltip" data-placement="top" title="Comments">
+                <i class="fas fa-comment-alt ml-3"></i> {{ getPostComments(post) }}
+              </a>
+            </span>
+        </mdb-card-footer>
+        <div *ngIf="post.comments">
+          <div *ngFor="let comment of post.comments">
+            <app-comment [comment]="comment"></app-comment>
+          </div>
+        </div>
+        <span class="w-100">
+            <div class="md-form amber-textarea active-amber-textarea-2">
+              <textarea [(ngModel)]="tmpCommentContent" type="text" id="form8" class="md-textarea form-control" mdbInputDirective></textarea>
+              <label for="form8">Leave a comment</label>
+                            <div class="float-right">
+                <button (click)="postComment(post)" mdbBtn type="button" color="deep-orange" mdbWavesEffect>Send</button>
+              </div>
+            </div>
+          </span>
+        <!--Card content-->
+      </mdb-card>
+      <!--Card-->
+
+      <div *ngIf="loggedUser.sharedPosts" style="margin-bottom: 40px;">
+        <mdb-card *ngFor="let post of loggedUser.sharedPosts" cascade="true" wider="true" class="card-ecommerce">
           <!--Card image-->
           <div class="view view-cascade overlay waves-light" mdbWavesEffect>
             <mdb-card-img src="{{ getFullPhotoUrl(post) }}"
@@ -111,11 +169,26 @@
               </a>
             </span>
           </mdb-card-footer>
+
+          <div *ngIf="post.comments">
+            <div *ngFor="let comment of post.comments">
+              <app-comment [comment]="comment"></app-comment>
+            </div>
+          </div>
+          <span class="w-100 text-center">
+            <div class="md-form  amber-textarea active-amber-textarea-2">
+              <textarea [(ngModel)]="tmpCommentContent" type="text" id="form9" class="md-textarea form-control" mdbInputDirective></textarea>
+              <label for="form9">Leave a comment</label>
+              <div class="float-right">
+                <button (click)="postComment(post)" mdbBtn type="button" color="deep-orange" mdbWavesEffect>Send</button>
+              </div>
+            </div>
+
+
+          </span>
           <!--Card content-->
         </mdb-card>
       </div>
-      <!--Card-->
-
     </div>
   </div>
 </div>
