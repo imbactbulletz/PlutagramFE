@@ -214,8 +214,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   sharedPost(post: Post) {
-    if (post.shared) {
-      return true;
+    if (this.loggedUser.sharedPosts) {
+      for (let i = 0; i < this.loggedUser.sharedPosts.length; i++) {
+        if (this.loggedUser.sharedPosts[i].id === post.id) {
+          return true;
+        }
+      }
     }
 
     return false;

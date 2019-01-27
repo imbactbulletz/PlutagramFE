@@ -1,7 +1,7 @@
 export abstract class RESTAPI {
   static baseUrl = 'http://192.168.0.12:8080';
   static photoServerUrl = 'http://localhost/WebServer/Documents';
-
+  static socketUrl = 'http://192.168.0.12:8080' + '/socket';
   // SIGN UP
   public static getSignUpURL() {
     return this.baseUrl + '/auth/register';
@@ -70,5 +70,10 @@ export abstract class RESTAPI {
   // POST COMMENT
   public static getPostCommentUrl() {
     return this.baseUrl + '/post/addCommentToPost';
+  }
+
+  // GET FRIEND POSTS
+  public static getFriendPosts() {
+    return this.baseUrl + '/post/findTop50';
   }
 }

@@ -19,6 +19,7 @@ import {SearchedUsersComponent} from './layouts/searched.users/searched.users.co
 import { MyprofileComponent } from './layouts/myprofile/myprofile.component';
 import { CommentComponent } from './layouts/comment/comment.component';
 import {SafePipe} from './shared/safe.pipe';
+import { ChatComponent } from './layouts/chat/chat.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import {SafePipe} from './shared/safe.pipe';
     SearchedUsersComponent,
     MyprofileComponent,
     CommentComponent,
-    SafePipe
+    SafePipe,
+    ChatComponent
   ],
   imports: [
     BrowserModule,

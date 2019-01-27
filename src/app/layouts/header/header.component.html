@@ -1,6 +1,6 @@
 <mdb-navbar SideClass="navbar fixed-top navbar-expand-lg navbar-dark deep-orange scrolling-navbar" [containerInside]="false">
   <logo>
-    <a class="logo navbar-brand" routerLink="/home"><strong>Plutagram</strong></a>
+    <a class="logo navbar-brand" routerLink="home"><strong>Plutagram</strong></a>
   </logo>
   <links>
     <ul class="navbar-nav mr-auto">
@@ -33,10 +33,13 @@
           <img *ngIf="user" style="max-height: 35px; max-width: 35px;" src="{{ displayPicture() }}" class="img-fluid rounded-circle z-depth-0"></a>
       </li>
       <li *ngIf="isLoggedIn()" routerLinkActive="active" class="nav-item waves-light" mdbRippleRadius>
-        <a class="nav-link">Home</a>
+        <a routerLink="/home" class="nav-link">Home</a>
       </li>
       <li *ngIf="isLoggedIn()" routerLinkActive="active" class="nav-item waves-light" mdbRippleRadius>
-        <a routerLink="settings" class="nav-link">Settings</a>
+        <a routerLink="/chat" class="nav-link">Chat</a>
+      </li>
+      <li *ngIf="isLoggedIn()" routerLinkActive="active" class="nav-item waves-light" mdbRippleRadius>
+        <a routerLink="/settings" class="nav-link">Settings</a>
       </li>
       <li *ngIf="isLoggedIn()" routerLinkActive="active" class="nav-item waves-light" mdbRippleRadius>
         <a class="nav-link">Log out</a>

@@ -35,10 +35,26 @@ export class LoginComponent implements OnInit, AfterViewInit {
     this.http.post(RESTAPI.getSignInURL(), body).subscribe(
 
       (response: LoginDTO) => {
+        console.log('LOGIN RESPONSE: ' + JSON.stringify(response));
         if (response) {
           if (response.token) {
             localStorage.setItem('X-AUTH-TOKEN', response.token);
             this.dataService.changeLoggedUser(response.user);
+
+            if (response.postsOfFriends) {
+              this.dataService.changePostsOfFriends(response.postsOfFriends);
+            }
+            if (response.chatChannels) {
+              console.log('Received cchannels: ' + response.chatChannels);
+
+              for (let i = 0; i < response.chatChannels.length; i++) {
+                response.chatChannels[i].messages.sort((a, b) => {
+                  return b.date < a.date ? 1 : (b.date > a.date ? -1 : 0);
+                });
+              }
+
+              this.dataService.changeChatChannels(response.chatChannels);
+            }
             this.router.navigateByUrl('home');
           }
         } else {

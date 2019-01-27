@@ -1,0 +1,52 @@
+<div *ngIf="hasChatChannels()" class="container-fluid">
+  <div class="row">
+    <!-- Links and buttons -->
+    <div class="col-sm-12 col-md-12 col-lg-4">
+      <h4 class="text-center">Users</h4>
+      <div class="list-group">
+        <a (click)="clickedChatChannel(channel, $event)" *ngFor="let channel of chatChannels"
+           class="list-group-item waves-light"
+           mdbWavesEffect>
+      <span class="float-left">
+               <img style="max-height: 50px;" src="{{ displayProfileImage(channel) }}" class="rounded-circle"
+                    id="profileImage">
+               <span style="padding-left: 10px;"> {{ channel.username }}</span>
+      </span>
+        </a>
+      </div>
+    </div>
+
+    <!--Chat area-->
+    <div *ngIf="selectedChatChannel" class="col-sm-12 col-md-12 col-lg-8">
+      <h4 class="text-center"> Messages </h4>
+      <div class="mesgs">
+        <div class="msg_history">
+          <div *ngFor="let message of selectedChatChannel.messages">
+          <div *ngIf="message.username !== loggedUser.username" class="incoming_msg">
+            <div class="incoming_msg_img"><img src="{{ displayProfileImage(selectedChatChannel) }}" alt="sunil"></div>
+            <div class="received_msg">
+              <div class="received_withd_msg">
+                <p> {{ message.content }} </p>
+                <span class="time_date"> {{ getMessageDateAndTime(message) }} </span></div>
+            </div>
+          </div>
+          <div *ngIf="message.username === loggedUser.username" class="outgoing_msg">
+            <div class="sent_msg">
+              <p> {{ message.content }} </p>
+              <span class="time_date"> {{ getMessageDateAndTime(message) }} </span></div>
+          </div>
+
+        </div>
+        </div>
+
+        <div class="type_msg">
+          <div class="input_msg_write">
+            <input [(ngModel)]="tmpMessageContent" type="text" class="write_msg" placeholder="Type a message"/>
+            <button (click)="sendChatMessage()" class="msg_send_btn" type="button"><i class="fas fa-arrow-right" aria-hidden="true"></i></button>
+          </div>
+        </div>
+      </div>
+
+  </div>
+</div>
+
