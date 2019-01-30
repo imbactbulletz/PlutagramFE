@@ -34,13 +34,24 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.chatChannels = chatChannels;
     } ));
 
-    this.subscription.add(this.dataService.loggedUser.subscribe( (user: User) => this.loggedUser = user));
+    this.subscription.add(this.dataService.loggedUser.subscribe( (user: User) => {
+      this.loggedUser = user;
+
+      if (this.loggedUser) {
+        this.http.get(RESTAPI.getChatChannels()).subscribe((chatChannels: ChatChannel[]) => {
+          this.chatChannels = chatChannels;
+          console.log(JSON.stringify(chatChannels));
+        });
+      }
+    }));
 
     this.subscription.add(this.dataService.message.subscribe( (unreadMessage) => {
-        if (unreadMessage) {
-          for (let i = 0; i < this.chatChannels.length; i++) {
-            if (this.chatChannels[i].uniqueName === unreadMessage.channel) {
-              this.chatChannels[i].messages.push(unreadMessage);
+        if(this.chatChannels) {
+          if (unreadMessage) {
+            for (let i = 0; i < this.chatChannels.length; i++) {
+              if (this.chatChannels[i].uniqueName === unreadMessage.channel) {
+                this.chatChannels[i].messages.push(unreadMessage);
+              }
             }
           }
         }
